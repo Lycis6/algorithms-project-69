@@ -9,6 +9,7 @@ public class SearchEngine {
         if(docs.isEmpty())
             return new ArrayList<>();
         List<String> result = new ArrayList<>();
+        String normalizedQuery = query.replaceAll("\\p{Punct}", "");
         for(Map<String, String> doc : docs) {
             boolean contains = false;
             if(!doc.isEmpty()){
@@ -18,7 +19,7 @@ public class SearchEngine {
                     continue;
                 }
                 for(String word : doc.get("text").replaceAll("\\p{Punct}", "").split(" ")) {
-                    if(word.equals(query)) {
+                    if(word.equals(normalizedQuery)) {
                         contains = true;
                         break;
                     }
