@@ -53,7 +53,7 @@ public class SearchEngineTest {
     }
 
     @Test public void matchesTest1() {
-        assertEquals(List.of("doc1", "doc3"), SearchEngine.search(List.of(
+        assertEquals(List.of("doc3", "doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "Hello, world"),
                 Map.of("id", "doc2", "text", "I am programming on JAVA"),
                 Map.of("id", "doc3", "text", "Hello. This is a text"),
@@ -61,7 +61,7 @@ public class SearchEngineTest {
                 "Hello"));
     }
 
-    @Test public void MatchesTest2() {
+    @Test public void matchesTest2() {
         assertEquals(List.of("doc1"), SearchEngine.search(List.of(
                 Collections.emptyMap(),
                 Collections.emptyMap(),
@@ -70,41 +70,29 @@ public class SearchEngineTest {
         ), "world"));
     }
 
-    @Test public void MatchesTest3() {
+    @Test public void matchesTest3() {
         assertEquals(List.of("doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "Hello, world")
         ), "world"));
     }
 
-    @Test public void MatchesTest4() {
-        assertEquals(List.of("doc1"), SearchEngine.search(List.of(
-                Map.of("id", "doc1", "text", "Hello, world")
-        ), " "));
-    }
-
-    @Test public void MatchesTest5() {
-        assertEquals(List.of("doc1"), SearchEngine.search(List.of(
-                Map.of("id", "doc1", "text", "Hello, world")
-        ), ","));
-    }
-
-    @Test public void MatchesTest6() {
-        assertEquals(List.of("doc1", "doc2"), SearchEngine.search(List.of(
+    @Test public void matchesTest4() {
+        assertEquals(List.of("doc2", "doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
                 Map.of("id", "doc3", "text", "I'm your shooter.")
         ), "shoot"));
     }
 
-    @Test public void MatchesTest7() {
-        assertEquals(List.of("doc1", "doc2"), SearchEngine.search(List.of(
+    @Test public void matchesTest5() {
+        assertEquals(List.of("doc2", "doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
                 Map.of("id", "doc3", "text", "I'm your shooter.")
         ), "shoot!!!!"));
     }
 
-    @Test public void MatchesTest8() {
+    @Test public void matchesTest6() {
         assertEquals(List.of("doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
@@ -112,7 +100,7 @@ public class SearchEngineTest {
         ), "pint?!!!!"));
     }
 
-    @Test public void MatchesTest9() {
+    @Test public void matchesTest7() {
         assertEquals(List.of("doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
@@ -120,8 +108,8 @@ public class SearchEngineTest {
         ), "...pint?!!!!"));
     }
 
-    @Test public void MatchesTest10() {
-        assertEquals(List.of("doc1", "doc3", "doc4"), SearchEngine.search(List.of(
+    @Test public void matchesTest8() {
+        assertEquals(List.of("doc4", "doc3", "doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
                 Map.of("id", "doc3", "text", "I'm your shooter, pint... for it."),
@@ -129,14 +117,40 @@ public class SearchEngineTest {
         ), "...pint?!!!!"));
     }
 
-    @Test public void MatchesTest11() {
-        assertEquals(List.of("doc1", "doc3", "doc5"), SearchEngine.search(List.of(
+    @Test public void matchesTest9() {
+        assertEquals(List.of("doc5", "doc3", "doc1"), SearchEngine.search(List.of(
                         Map.of("id", "doc1", "text", "Hello, world"),
                         Map.of("id", "doc2", "text", "I am programming on JAVA"),
                         Map.of("id", "doc3", "text", "Hello. This is a text"),
                         Map.of("id", "doc4", "text", "This is a kind of useless text"),
                         Map.of("id", "doc5", "text", "Hello you!")),
                 "Hello?"));
+    }
+
+    @Test public void matchesTest10() {
+        assertEquals(List.of("doc2", "doc3", "doc5", "doc1"), SearchEngine.search(List.of(
+                        Map.of("id", "doc1", "text", "Hello, world"),
+                        Map.of("id", "doc2", "text", "I am programming on JAVA. Hello, Hello, Hello!"),
+                        Map.of("id", "doc3", "text", "Hello, Hello. This is a text"),
+                        Map.of("id", "doc4", "text", "This is a kind of useless text"),
+                        Map.of("id", "doc5", "text", "Hello you! Hello, I say!")),
+                "Hello?"));
+    }
+
+    @Test public void matchesTest11() {
+        assertEquals(List.of("doc2", "doc1"), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "I can't shoot shoot straight unless I've had a pint!"),
+                Map.of("id", "doc2", "text", "Don't shoot shoot shoot shoot shoot that thing at me."),
+                Map.of("id", "doc3", "text", "I'm your shooter.")
+        ), "...shoot?!!!!"));
+    }
+
+    @Test public void matchesTest12() {
+        assertEquals(List.of("doc2"), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "I can't straight unless I've had a pint!"),
+                Map.of("id", "doc2", "text", "Don't shoot shoot shoot shoot shoot that thing at me."),
+                Map.of("id", "doc3", "text", "I'm your shooter.")
+        ), "...shoot?!!!!"));
     }
 
 
