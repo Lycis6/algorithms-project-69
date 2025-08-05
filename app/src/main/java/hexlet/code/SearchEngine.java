@@ -1,11 +1,32 @@
-package hexlet.code;
+package main.java.hexlet.code;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SearchEngine {
-    public String getGreeting() {
-        return "Hey, you!";
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new SearchEngine().getGreeting());
+    public static List<String> search(List<Map<String, String>> docs, String query) {
+        if(docs.isEmpty())
+            return new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        for(Map<String, String> doc : docs) {
+            boolean contains = false;
+            if(!doc.isEmpty()){
+                if(query.equals(" ") || query.matches("\\p{Punct}")){
+                    if(doc.get("text").contains(query))
+                        result.add(doc.get("id"));
+                    continue;
+                }
+                for(String word : doc.get("text").replaceAll("\\p{Punct}", "").split(" ")) {
+                    if(word.equals(query)) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if(contains)
+                    result.add(doc.get("id"));
+            }
+        }
+        return result;
     }
 }
