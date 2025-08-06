@@ -1,0 +1,51 @@
+package test.java.org.example;
+
+import main.java.hexlet.code.SearchEngine;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+public class IndexingTest {
+    @Test public void testIndexing1() {
+        assertEquals(Map.of(
+                "some", List.of("doc1", "doc2"),
+                "text", List.of("doc1", "doc2"),
+                "too", List.of("doc2")),
+                SearchEngine.indexing("some text too", List.of(
+                        Map.of("id", "doc1", "text", "some text"),
+                        Map.of("id", "doc2", "text", "some text too me")
+                )));
+    }
+
+    @Test public void testIndexing2() {
+        assertEquals(Map.of(
+                        "some", List.of("doc1", "doc2", "doc4"),
+                        "text", List.of("doc1", "doc2"),
+                        "too", List.of("doc1", "doc2")),
+                SearchEngine.indexing("some text too", List.of(
+                        Map.of("id", "doc1", "text", "some text. It is here too"),
+                        Map.of("id", "doc2", "text", "some text too me"),
+                        Map.of("id", "doc3", "text", "Hello, world!"),
+                        Map.of("id", "doc4", "text", "some kind of humor")
+                )));
+    }
+
+    @Test public void testIndexing3() {
+        assertEquals(Map.of(
+                        "some", List.of("doc1", "doc2", "doc4"),
+                        "text", List.of("doc1", "doc2"),
+                        "too", List.of("doc1", "doc2"),
+                        "Hello", List.of("doc3"),
+                        "you", new ArrayList<>()),
+                SearchEngine.indexing("some text too. Hello, you", List.of(
+                        Map.of("id", "doc1", "text", "some text. It is here too"),
+                        Map.of("id", "doc2", "text", "some text too me"),
+                        Map.of("id", "doc3", "text", "Hello, world!"),
+                        Map.of("id", "doc4", "text", "some kind of humor")
+                )));
+    }
+
+}
