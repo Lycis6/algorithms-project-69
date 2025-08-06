@@ -44,6 +44,6 @@ public class IndexingTest {
                         Map.of("id", "doc2", "text", "some text too me"),
                         Map.of("id", "doc3", "text", "Hello, world!"),
                         Map.of("id", "doc4", "text", "some kind of humor")
-                ),"some text too. Hello, you"));
+                ), "some text too. Hello, you"));
     }
 }

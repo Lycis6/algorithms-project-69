@@ -186,40 +186,41 @@ public class SearchEngine {
     }
     */
 
-    public static List<String> search(List<Map<String, String>> docs, String query){
-        if(docs.isEmpty() || query.isEmpty())
+    public static List<String> search(List<Map<String, String>> docs, String query) {
+        if (docs.isEmpty() || query.isEmpty()) {
             return new ArrayList<>();
+        }
         String normalizedQuery = query.replaceAll("\\p{Punct}", "").toLowerCase();
         try {
             Map<String, List<String>> index = indexing(docs, normalizedQuery);
-            Map<String, Double> IdfMetric = calculateIDF(docs.size(), normalizedQuery, index);
-            List<Map<String, String>> TfMetric = calculateTF(docs, normalizedQuery);
-            Map<String, Double> TfIdfMetrics = calculateTfIdf(docs, TfMetric, IdfMetric);
-            return sortByMetrics(docs, TfIdfMetrics);
-        }
-        catch (NullPointerException e) {
+            Map<String, Double> idfMetric = calculateIDF(docs.size(), normalizedQuery, index);
+            List<Map<String, String>> tfMetric = calculateTF(docs, normalizedQuery);
+            Map<String, Double> tfIdfMetrics = calculateTfIdf(docs, tfMetric, idfMetric);
+            return sortByMetrics(docs, tfIdfMetrics);
+        } catch (NullPointerException e) {
             System.out.println("Null Pointer Exception");
             return new ArrayList<>();
         }
     }
 
-    public static Map<String, List<String>> indexing(List<Map<String, String>> docs, String query){
+    public static Map<String, List<String>> indexing(List<Map<String, String>> docs, String query) {
         Map<String, List<String>> index = new HashMap<>();
         String normalizedQuery = query.replaceAll("\\p{Punct}", "").toLowerCase();
-        for(String keyWord: normalizedQuery.split(" ")){
+        for (String keyWord: normalizedQuery.split(" ")) {
             List<String> result = new ArrayList<>();
-            for(Map<String, String> doc: docs){
-                if(doc.isEmpty())
+            for (Map<String, String> doc: docs) {
+                if (doc.isEmpty()) {
                     continue;
+                }
                 boolean contains = false;
-                for(String word : doc.get("text").replaceAll("\\p{Punct}", "")
+                for (String word : doc.get("text").replaceAll("\\p{Punct}", "")
                         .toLowerCase().split(" ")) {
-                    if(word.equals(keyWord)) {
+                    if (word.equals(keyWord)) {
                         contains = true;
                         break;
                     }
                 }
-                if(contains){
+                if (contains) {
                     result.add(doc.get("id"));
                 }
             }
@@ -228,31 +229,32 @@ public class SearchEngine {
         return index;
     }
 
-    private static Map<String, Double> calculateIDF(int docsCount, String query, Map<String, List<String>> index){
-        Map<String, Double> IdfMetrics = new HashMap<>();
+    private static Map<String, Double> calculateIDF(int docsCount, String query, Map<String, List<String>> index) {
+        Map<String, Double> idfMetrics = new HashMap<>();
         double idf;
 
-        for(String word: query.split(" ")){
-              idf = Math.log(1 + (docsCount - index.get(word).size() + 1) / (index.get(word).size() + 0.5))
+        for (String word: query.split(" ")) {
+            idf = Math.log(1 + (docsCount - index.get(word).size() + 1) / (index.get(word).size() + 0.5))
                       / Math.log(2);
-              IdfMetrics.put(word, idf);
+            idfMetrics.put(word, idf);
         }
-        return IdfMetrics;
+        return idfMetrics;
     }
 
-    private static List<Map<String, String>> calculateTF(List<Map<String, String>> docs, String query){
+    private static List<Map<String, String>> calculateTF(List<Map<String, String>> docs, String query) {
         Map<String, Integer> wordCountsByDocs = calculateWordsCount(docs);
-        List<Map<String, String>> TfMetrics = new ArrayList<>();
+        List<Map<String, String>> tfMetrics = new ArrayList<>();
         double tf;
-        for(String keyWord: query.split(" ")){
+        for (String keyWord: query.split(" ")) {
             Map<String, Integer> keyWordCountsByDocs = calculateCountsByKeyWord(docs, keyWord);
-            for(Map<String, String> doc: docs){
-                if(doc.isEmpty())
+            for (Map<String, String> doc: docs) {
+                if (doc.isEmpty()) {
                     continue;
+                }
                 String id = doc.get("id");
-                if(keyWordCountsByDocs.containsKey(id) && wordCountsByDocs.containsKey(id)) {
+                if (keyWordCountsByDocs.containsKey(id) && wordCountsByDocs.containsKey(id)) {
                     tf = (double) keyWordCountsByDocs.get(id) / wordCountsByDocs.get(id);
-                    TfMetrics.add(Map.of(
+                    tfMetrics.add(Map.of(
                             "id", id,
                             "keyWord", keyWord,
                             "tf", Double.toString(tf)
@@ -260,36 +262,37 @@ public class SearchEngine {
                 }
             }
         }
-        return TfMetrics;
+        return tfMetrics;
     }
 
     private static Map<String, Double> calculateTfIdf(List<Map<String, String>> docs, List<Map<String, String>>
-            TfMetrics, Map<String, Double> IdfMetrics){
-        Map<String, Double> TfIdfMetrics = new HashMap<>();
-        for(Map<String, String> doc: docs){
+            tfMetrics, Map<String, Double> idfMetrics) {
+        Map<String, Double> tfIdfMetrics = new HashMap<>();
+        for (Map<String, String> doc: docs) {
             double tfIdf = 0;
-            for(Map<String, String> tf: TfMetrics){
+            for (Map<String, String> tf: tfMetrics) {
                 // посчитана ли для данного документа метрика tf
-                if(tf.get("id").equals(doc.get("id"))){
-                    tfIdf = tfIdf + Double.parseDouble(tf.get("tf"))*IdfMetrics.get(tf.get("keyWord"));
+                if (tf.get("id").equals(doc.get("id"))) {
+                    tfIdf = tfIdf + Double.parseDouble(tf.get("tf")) * idfMetrics.get(tf.get("keyWord"));
                 }
             }
-            TfIdfMetrics.put(doc.get("id"), tfIdf);
+            tfIdfMetrics.put(doc.get("id"), tfIdf);
         }
-        return TfIdfMetrics;
+        return tfIdfMetrics;
     }
 
     private static Map<String, Integer> calculateCountsByKeyWord(List<Map<String, String>> docs, String keyWord) {
         Map<String, Integer> keyWordCountByDocs = new HashMap<>();
-        for(Map<String, String> doc : docs) {
-            if(!doc.isEmpty()){
-                for(String word : doc.get("text").replaceAll("\\p{Punct}", "")
+        for (Map<String, String> doc : docs) {
+            if (!doc.isEmpty()) {
+                for (String word : doc.get("text").replaceAll("\\p{Punct}", "")
                         .toLowerCase().split(" ")) {
-                    if(word.equals(keyWord)) {
-                        if(keyWordCountByDocs.containsKey(doc.get("id")))
+                    if (word.equals(keyWord)) {
+                        if (keyWordCountByDocs.containsKey(doc.get("id"))) {
                             keyWordCountByDocs.put(doc.get("id"), keyWordCountByDocs.get(doc.get("id")) + 1);
-                        else
+                        } else {
                             keyWordCountByDocs.put(doc.get("id"), 1);
+                        }
                     }
                 }
             }
@@ -297,26 +300,28 @@ public class SearchEngine {
         return keyWordCountByDocs;
     }
 
-    private static Map<String, Integer> calculateWordsCount (List<Map<String, String>> docs){
+    private static Map<String, Integer> calculateWordsCount(List<Map<String, String>> docs) {
         Map<String, Integer> wordsCount = new HashMap<>();
-        for(Map<String, String> doc: docs){
-            if(doc.isEmpty())
+        for (Map<String, String> doc: docs) {
+            if (doc.isEmpty()) {
                 continue;
+            }
             wordsCount.put(doc.get("id"), doc.get("text").split(" ").length);
         }
         return wordsCount;
     }
 
-    private static List<String> sortByMetrics(List<Map<String, String>> docs, Map<String, Double> TfIdfMetrics ){
+    private static List<String> sortByMetrics(List<Map<String, String>> docs, Map<String, Double> tfIdfMetrics) {
         List<String> result = new ArrayList<>();
-        for(Map.Entry<String, Double> entry1: TfIdfMetrics.entrySet()){
-            for(Map.Entry<String, Double> entry2: TfIdfMetrics.entrySet()){
-                if(entry2.getValue() > entry1.getValue()){
+        for (Map.Entry<String, Double> entry1: tfIdfMetrics.entrySet()) {
+            for (Map.Entry<String, Double> entry2: tfIdfMetrics.entrySet()) {
+                if (entry2.getValue() > entry1.getValue()) {
                     entry1 = entry2;
                 }
             }
-            if(entry1.getValue() != 0)
+            if (entry1.getValue() != 0) {
                 result.add(entry1.getKey());
+            }
             entry1.setValue(0D);
         }
         return result;

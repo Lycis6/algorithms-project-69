@@ -165,30 +165,30 @@ public class SearchEngineTest {
     }
 
     @Test public void matchesTest14() {
-        assertEquals(List.of("doc3", "doc1", "doc2", "doc4" ), SearchEngine.search(List.of(
-                Map.of("id", "doc1", "text", "I like walk to park every single day, also i like" +
-                        " relaxing"),
+        assertEquals(List.of("doc3", "doc1", "doc2", "doc4"), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "I like walk to park every single day, also i like"
+                        + " relaxing"),
                 Map.of("id", "doc2", "text", "Eating fast food that what I like"),
                 Map.of("id", "doc3", "text", "I like playing different sport games on nature."),
-                Map.of("id", "doc4", "text", "A lot of people likes spending free time with there" +
-                        " friends" +
-                        " playing smth")),"like playing"));
+                Map.of("id", "doc4", "text", "A lot of people likes spending free time with there"
+                        + " friends"
+                        + " playing smth")), "like playing"));
     }
 
     @Test public void matchesTest15() {
-        assertEquals(List.of("doc2", "doc3", "doc1" ), SearchEngine.search(List.of(
+        assertEquals(List.of("doc2", "doc3", "doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "the cat sat on the mat"),
                 Map.of("id", "doc2", "text", "the dog chased the cat"),
                 Map.of("id", "doc3", "text", "the dog barked loudly")
-        ),"dog cat"));
+        ), "dog cat"));
     }
 
     @Test public void matchesTest16() {
-        assertEquals(List.of("doc1", "doc2", "doc3" ), SearchEngine.search(List.of(
+        assertEquals(List.of("doc1", "doc2", "doc3"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "apple orange banana"),
                 Map.of("id", "doc2", "text", "apple apple fruit orange"),
                 Map.of("id", "doc3", "text", "banana fruit salad")
-        ),"apple banana"));
+         ), "apple banana"));
     }
 
     @Test public void matchesTest17() {
@@ -196,7 +196,7 @@ public class SearchEngineTest {
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
                 Map.of("id", "doc3", "text", "I'm your shooter.")
-        ),"shoot at me, nerd"));
+        ), "shoot at me, nerd"));
     }
 
     @Test public void emptyArrayTest() {
