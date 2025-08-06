@@ -1,6 +1,6 @@
 package test.java.org.example;
 
-import main.java.hexlet.code.SearchEngine;
+import hexlet.code.SearchEngine;
 import org.junit.Test;
 
 import java.util.ArrayList;
