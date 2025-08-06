@@ -153,6 +153,23 @@ public class SearchEngineTest {
         ), "...shoot?!!!!"));
     }
 
+    @Test public void matchesTest13() {
+        assertEquals(List.of("doc2", "doc3", "doc1"), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "I can't straight unless I've had a pint! Look at shoot"),
+                Map.of("id", "doc2", "text", "Don't shoot shoot shoot shoot shoot that thing at me."),
+                Map.of("id", "doc3", "text", "A I'm your shooter. Shoot, shoot, shoot.")
+        ), "...shoot me?!!!!"));
+    }
+
+    @Test public void matchesTest14() {
+        assertEquals(List.of("doc3", "doc1", "doc2", "doc4" ), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "I like walk to park every single day, also i like relaxing"),
+                Map.of("id", "doc2", "text", "Eating fast food that what I like"),
+                Map.of("id", "doc3", "text", "I like playing different sport games on nature."),
+                Map.of("id", "doc4", "text", "A lot of people likes spending free time with there friends" +
+                        " playing smth")),"like playing"));
+    }
+
 
     @Test public void emptyArrayTest() {
         assertEquals(new ArrayList<>(), SearchEngine.search(new ArrayList<>(), "query"));
