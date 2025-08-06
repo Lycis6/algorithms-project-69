@@ -14,10 +14,10 @@ public class IndexingTest {
                 "some", List.of("doc1", "doc2"),
                 "text", List.of("doc1", "doc2"),
                 "too", List.of("doc2")),
-                SearchEngine.indexing("some text too", List.of(
+                SearchEngine.indexing(List.of(
                         Map.of("id", "doc1", "text", "some text"),
                         Map.of("id", "doc2", "text", "some text too me")
-                )));
+                ), "some text too"));
     }
 
     @Test public void testIndexing2() {
@@ -25,12 +25,12 @@ public class IndexingTest {
                         "some", List.of("doc1", "doc2", "doc4"),
                         "text", List.of("doc1", "doc2"),
                         "too", List.of("doc1", "doc2")),
-                SearchEngine.indexing("some text too", List.of(
+                SearchEngine.indexing(List.of(
                         Map.of("id", "doc1", "text", "some text. It is here too"),
                         Map.of("id", "doc2", "text", "some text too me"),
                         Map.of("id", "doc3", "text", "Hello, world!"),
                         Map.of("id", "doc4", "text", "some kind of humor")
-                )));
+                ), "some text too"));
     }
 
     @Test public void testIndexing3() {
@@ -40,12 +40,12 @@ public class IndexingTest {
                         "too", List.of("doc1", "doc2"),
                         "Hello", List.of("doc3"),
                         "you", new ArrayList<>()),
-                SearchEngine.indexing("some text too. Hello, you", List.of(
+                SearchEngine.indexing(List.of(
                         Map.of("id", "doc1", "text", "some text. It is here too"),
                         Map.of("id", "doc2", "text", "some text too me"),
                         Map.of("id", "doc3", "text", "Hello, world!"),
                         Map.of("id", "doc4", "text", "some kind of humor")
-                )));
+                ),"some text too. Hello, you"));
     }
 
 }

@@ -53,7 +53,7 @@ public class SearchEngineTest {
     }
 
     @Test public void matchesTest1() {
-        assertEquals(List.of("doc3", "doc1"), SearchEngine.search(List.of(
+        assertEquals(List.of("doc1", "doc3"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "Hello, world"),
                 Map.of("id", "doc2", "text", "I am programming on JAVA"),
                 Map.of("id", "doc3", "text", "Hello. This is a text"),
@@ -109,7 +109,7 @@ public class SearchEngineTest {
     }
 
     @Test public void matchesTest8() {
-        assertEquals(List.of("doc4", "doc3", "doc1"), SearchEngine.search(List.of(
+        assertEquals(List.of("doc3", "doc4", "doc1"), SearchEngine.search(List.of(
                 Map.of("id", "doc1", "text", "I can't shoot straight unless I've had a pint!"),
                 Map.of("id", "doc2", "text", "Don't shoot shoot shoot that thing at me."),
                 Map.of("id", "doc3", "text", "I'm your shooter, pint... for it."),
@@ -118,7 +118,7 @@ public class SearchEngineTest {
     }
 
     @Test public void matchesTest9() {
-        assertEquals(List.of("doc5", "doc3", "doc1"), SearchEngine.search(List.of(
+        assertEquals(List.of("doc5", "doc1", "doc3"), SearchEngine.search(List.of(
                         Map.of("id", "doc1", "text", "Hello, world"),
                         Map.of("id", "doc2", "text", "I am programming on JAVA"),
                         Map.of("id", "doc3", "text", "Hello. This is a text"),
@@ -128,7 +128,7 @@ public class SearchEngineTest {
     }
 
     @Test public void matchesTest10() {
-        assertEquals(List.of("doc2", "doc3", "doc5", "doc1"), SearchEngine.search(List.of(
+        assertEquals(List.of("doc1", "doc5", "doc2", "doc3"), SearchEngine.search(List.of(
                         Map.of("id", "doc1", "text", "Hello, world"),
                         Map.of("id", "doc2", "text", "I am programming on JAVA. Hello, Hello, Hello!"),
                         Map.of("id", "doc3", "text", "Hello, Hello. This is a text"),
@@ -168,6 +168,22 @@ public class SearchEngineTest {
                 Map.of("id", "doc3", "text", "I like playing different sport games on nature."),
                 Map.of("id", "doc4", "text", "A lot of people likes spending free time with there friends" +
                         " playing smth")),"like playing"));
+    }
+
+    @Test public void matchesTest15() {
+        assertEquals(List.of("doc2", "doc3", "doc1" ), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "the cat sat on the mat"),
+                Map.of("id", "doc2", "text", "the dog chased the cat"),
+                Map.of("id", "doc3", "text", "the dog barked loudly")
+        ),"dog cat"));
+    }
+
+    @Test public void matchesTest16() {
+        assertEquals(List.of("doc1", "doc2", "doc3" ), SearchEngine.search(List.of(
+                Map.of("id", "doc1", "text", "apple orange banana"),
+                Map.of("id", "doc2", "text", "apple apple fruit orange"),
+                Map.of("id", "doc3", "text", "banana fruit salad")
+        ),"apple banana"));
     }
 
 
