@@ -189,7 +189,7 @@ public class SearchEngine {
     public static List<String> search(List<Map<String, String>> docs, String query){
         if(docs.isEmpty() || query.isEmpty())
             return new ArrayList<>();
-        String normalizedQuery = query.replaceAll("\\p{Punct}", "");
+        String normalizedQuery = query.replaceAll("\\p{Punct}", "").toLowerCase();
         try {
             Map<String, List<String>> index = indexing(docs, normalizedQuery);
             Map<String, Double> IdfMetric = calculateIDF(docs.size(), normalizedQuery, index);
@@ -208,14 +208,14 @@ public class SearchEngine {
 
     public static Map<String, List<String>> indexing(List<Map<String, String>> docs, String query){
         Map<String, List<String>> index = new HashMap<>();
-        String normalizedQuery = query.replaceAll("\\p{Punct}", "");
+        String normalizedQuery = query.replaceAll("\\p{Punct}", "").toLowerCase();
         for(String keyWord: normalizedQuery.split(" ")){
             List<String> result = new ArrayList<>();
             for(Map<String, String> doc: docs){
                 if(doc.isEmpty())
                     continue;
                 boolean contains = false;
-                for(String word : doc.get("text").replaceAll("\\p{Punct}", "").split(" ")) {
+                for(String word : doc.get("text").replaceAll("\\p{Punct}", "").toLowerCase().split(" ")) {
                     if(word.equals(keyWord)) {
                         contains = true;
                         break;
@@ -286,7 +286,7 @@ public class SearchEngine {
         Map<String, Integer> keyWordCountByDocs = new HashMap<>();
         for(Map<String, String> doc : docs) {
             if(!doc.isEmpty()){
-                for(String word : doc.get("text").replaceAll("\\p{Punct}", "").split(" ")) {
+                for(String word : doc.get("text").replaceAll("\\p{Punct}", "").toLowerCase().split(" ")) {
                     if(word.equals(keyWord)) {
                         if(keyWordCountByDocs.containsKey(doc.get("id")))
                             keyWordCountByDocs.put(doc.get("id"), keyWordCountByDocs.get(doc.get("id")) + 1);
