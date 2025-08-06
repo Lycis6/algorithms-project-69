@@ -193,10 +193,7 @@ public class SearchEngine {
         try {
             Map<String, List<String>> index = indexing(docs, normalizedQuery);
             Map<String, Double> IdfMetric = calculateIDF(docs.size(), normalizedQuery, index);
-            // значение TF характеризуется и словом и документом
-            // список словарей с тремя ключами "id" - имя документа, "keyWord" - ключевое слово, "tf" - значение в строковом формате
             List<Map<String, String>> TfMetric = calculateTF(docs, normalizedQuery);
-            // Для каждого документа TF-IDF
             Map<String, Double> TfIdfMetrics = calculateTfIdf(docs, TfMetric, IdfMetric);
             return sortByMetrics(docs, TfIdfMetrics);
         }
@@ -280,8 +277,6 @@ public class SearchEngine {
         return TfIdfMetrics;
     }
 
-
-    // подсчет вхождений ключевого слова в список документов
     private static Map<String, Integer> calculateCountsByKeyWord(List<Map<String, String>> docs, String keyWord) {
         Map<String, Integer> keyWordCountByDocs = new HashMap<>();
         for(Map<String, String> doc : docs) {
@@ -299,7 +294,6 @@ public class SearchEngine {
         return keyWordCountByDocs;
     }
 
-    // подсчет слов в документах
     private static Map<String, Integer> calculateWordsCount (List<Map<String, String>> docs){
         Map<String, Integer> wordsCount = new HashMap<>();
         for(Map<String, String> doc: docs){
@@ -310,7 +304,6 @@ public class SearchEngine {
         return wordsCount;
     }
 
-    // ранжирование по метрике
     private static List<String> sortByMetrics(List<Map<String, String>> docs, Map<String, Double> TfIdfMetrics ){
         List<String> result = new ArrayList<>();
         for(Map.Entry<String, Double> entry1: TfIdfMetrics.entrySet()){

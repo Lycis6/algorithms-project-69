@@ -38,7 +38,7 @@ public class IndexingTest {
                         "some", List.of("doc1", "doc2", "doc4"),
                         "text", List.of("doc1", "doc2"),
                         "too", List.of("doc1", "doc2"),
-                        "Hello", List.of("doc3"),
+                        "hello", List.of("doc3"),
                         "you", new ArrayList<>()),
                 SearchEngine.indexing(List.of(
                         Map.of("id", "doc1", "text", "some text. It is here too"),
